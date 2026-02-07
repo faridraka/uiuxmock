@@ -9,6 +9,7 @@ const appFont = DM_Sans({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "UIUX Mockup Generator App",
   description: "Generated High quality Free UIUX Mobile and Web Mockup Design",
+  icons: "/logo.png"
 };
 
 export default function RootLayout({

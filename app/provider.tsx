@@ -9,7 +9,6 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
   const CreateNewUser = async () => {
     const res = await axios.post("/api/user", {});
 
-    console.log(res.data);
     setUserDetail(res?.data);
   };
 

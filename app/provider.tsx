@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { UserDetailContext } from "@/context/UserDetailContext";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const [userDetail, setUserDetail] = useState();
@@ -18,7 +19,15 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-      <div>{children}</div>
+      <ThemeProvider
+        attribute={"class"}
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+        storageKey="ui-theme"
+      >
+        <div>{children}</div>
+      </ThemeProvider>
     </UserDetailContext.Provider>
   );
 };

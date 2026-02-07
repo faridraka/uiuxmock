@@ -1,5 +1,6 @@
 "use client";
 
+import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
@@ -23,13 +24,16 @@ const Header = () => {
           Pricing
         </li>
       </ul>
-      {!user ? (
+      <div className="flex flex-row items-center justify-between gap-4">
+        <ModeToggle />
+        {!user ? (
         <SignInButton mode="modal" >
           <Button>Get Started</Button>
         </SignInButton>
       ) : (
         <UserButton />
       )}
+      </div>
     </div>
   );
 };

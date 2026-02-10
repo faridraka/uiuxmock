@@ -22,7 +22,7 @@ export default function RootLayout({
     <ClerkProvider appearance={{
       theme: shadcn
     }}>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning={true}>
         <body className={`${appFont.className} antialiased`}>
           <Provider>
             {children}

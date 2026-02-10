@@ -24,7 +24,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
         defaultTheme="system"
         enableSystem
         disableTransitionOnChange
-        storageKey="ui-theme"
+        storageKey="theme"
       >
         <div>{children}</div>
       </ThemeProvider>

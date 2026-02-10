@@ -1,18 +1,51 @@
 import { db } from "@/config/db";
-import { projectTable } from "@/config/schema";
+import { projectTable, screenConfigTable } from "@/config/schema";
 import { currentUser } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest){
+export async function POST(req: NextRequest) {
   const { userInput, device, projectId } = await req.json();
   const user = await currentUser();
 
-  const result = await db.insert(projectTable).values({
-    projectId,
-    userInput,
-    device,
-    userId: user?.primaryEmailAddress?.emailAddress as string,
-  }).returning();
+  const result = await db
+    .insert(projectTable)
+    .values({
+      projectId,
+      userInput,
+      device,
+      userId: user?.primaryEmailAddress?.emailAddress as string,
+    })
+    .returning();
 
-  return NextResponse.json(result[0])
+  return NextResponse.json(result[0]);
+}
+
+export async function GET(req: NextRequest) {
+  const projectId = await req.nextUrl.searchParams.get("projectId");
+  const user = await currentUser();
+
+  try {
+    const result = await db
+      .select()
+      .from(projectTable)
+      .where(
+        and(
+          eq(projectTable.projectId, projectId as string),
+          eq(
+            projectTable.userId,
+            user?.primaryEmailAddress?.emailAddress as string,
+          ),
+        ),
+      );
+
+    const ScreenConfig = await db.select().from(screenConfigTable).where(eq(screenConfigTable.projectId, projectId as string))
+
+    return NextResponse.json({
+      projectDetail: result[0],
+      screenConfig: ScreenConfig
+    })
+  } catch (e) {
+    return NextResponse.json({ msg: "Error" });
+  }
 }

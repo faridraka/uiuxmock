@@ -8,18 +8,20 @@ import { ProjectType } from "@/types/type";
 import { Camera, Share, Sparkles } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-type Props ={
-  projectDetail: ProjectType | undefined
-}
+type Props = {
+  projectDetail: ProjectType | undefined;
+};
 
-const SettingsSection = ({projectDetail}:Props) => {
+const SettingsSection = ({ projectDetail }: Props) => {
   const [selectedTheme, setSelectedTheme] = useState("AURORA_INK");
-  const [projectName, setProjectName] = useState(projectDetail?.projectName || "");
+  const [projectName, setProjectName] = useState(
+    projectDetail?.projectName || "",
+  );
   const [userNewScreenInput, setUserNewScreenInput] = useState("");
 
-  useEffect(() =>{
-    projectDetail && setProjectName(projectDetail?.projectName as string)
-  }, [projectDetail])
+  useEffect(() => {
+    setProjectName(projectDetail?.projectName || "");
+  }, [projectDetail]);
 
   return (
     <div className="w-75 h-[calc(100vh-72px)] p-5 border-r">
@@ -38,6 +40,7 @@ const SettingsSection = ({projectDetail}:Props) => {
         <h2 className="text-sm mb-1">Generate New Screen</h2>
         <Textarea
           placeholder="Enter Prompt to generate screen using AI"
+          value={userNewScreenInput}
           onChange={(event) => setUserNewScreenInput(event.target.value)}
         />
         <Button size={"sm"} className="mt-2 w-full">

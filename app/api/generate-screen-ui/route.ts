@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
   screen Name is: ${screenName},
   screen Purpose is: ${purpose},
   screen Description: ${screenDescription}
+  screen Visual Description: ${projectVisualDescription}
   `;
 
   try {

@@ -39,13 +39,35 @@ export async function GET(req: NextRequest) {
         ),
       );
 
-    const ScreenConfig = await db.select().from(screenConfigTable).where(eq(screenConfigTable.projectId, projectId as string))
+    const ScreenConfig = await db
+      .select()
+      .from(screenConfigTable)
+      .where(eq(screenConfigTable.projectId, projectId as string));
 
     return NextResponse.json({
       projectDetail: result[0],
-      screenConfig: ScreenConfig
-    })
+      screenConfig: ScreenConfig,
+    });
   } catch (e) {
     return NextResponse.json({ msg: "Error" });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  const { projectName, theme, projectId } = await req.json();
+
+  try {
+    const result = await db
+      .update(projectTable)
+      .set({
+        projectName,
+        theme,
+      })
+      .where(eq(projectTable.projectId, projectId))
+      .returning();
+
+    return NextResponse.json(result[0]);
+  } catch (err) {
+    console.log(err);
   }
 }

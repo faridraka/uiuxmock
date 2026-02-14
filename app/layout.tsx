@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { shadcn } from "@clerk/themes"
 import "./globals.css";
 import Provider from "./provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const appFont = DM_Sans({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
           <Provider>
             {children}
           </Provider>
+          <Toaster position="top-center" duration={1000} />
         </body>
       </html>
     </ClerkProvider>

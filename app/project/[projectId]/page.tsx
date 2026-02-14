@@ -4,16 +4,18 @@ import { ProjectType, ScreenConfigType } from "@/types/type";
 import axios from "axios";
 import { Loader } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ProjectHeader from "./_shared/ProjectHeader";
 import SettingsSection from "./_shared/SettingsSection";
 import Canvas from "./_shared/Canvas";
+import { SettingContext } from "@/context/SettingContext";
 
 const ProjectCanvasPlaygrond = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState<ProjectType>();
   const [screenConfigOriginal, setScreenConfigOriginal] = useState<ScreenConfigType[]>();
   const [screenConfig, setScreenConfig] = useState<ScreenConfigType[]>();
+  const { setSettingsDetail } = useContext(SettingContext)
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState("Loading");
 
@@ -25,6 +27,7 @@ const ProjectCanvasPlaygrond = () => {
     setProjectDetail(result?.data?.projectDetail);
     setScreenConfigOriginal(result?.data?.screenConfig);
     setScreenConfig(result?.data?.screenConfig);
+    setSettingsDetail(result?.data?.projectDetail)
 
     // if(result?.data?.screenConfig.length == 0){
     //   generateScreenConfig();
@@ -65,9 +68,9 @@ const ProjectCanvasPlaygrond = () => {
         screenDescription: screen?.screenDescription,
         projectVisualDescription: projectDetail?.projectVisualDescription
       });
-      setScreenConfig(prev => prev?.map((item, i) : any => {
+      setScreenConfig(prev => prev?.map((item, i) : any => 
         (i === index ? result.data : item)
-      }))
+      ))
     }
 
     setLoading(false);
@@ -83,7 +86,7 @@ const ProjectCanvasPlaygrond = () => {
     } else if (projectDetail && screenConfigOriginal) {
       GenerateScreenUIUX();
     }
-  }, [screenConfigOriginal]);
+  }, [screenConfigOriginal, projectId]);
 
   return (
     <div>
@@ -91,7 +94,7 @@ const ProjectCanvasPlaygrond = () => {
 
       <div className="flex" >
         {loading && (
-          <div className="p-3 absolute bg-blue-300/20 border-blue-400 border rounded-xl left-1/2 top-20">
+          <div className="p-3 absolute bg-blue-300/20 border-blue-400 border rounded-xl left-1/2 top-20 z-10">
             <h2 className="flex flex-row gap-2 items-center">
               {" "}
               <Loader className="animate-spin" /> {loadingMsg}{" "}
@@ -100,7 +103,7 @@ const ProjectCanvasPlaygrond = () => {
         )}
         {/* Settings Canvas */}
         <SettingsSection projectDetail={projectDetail} />
-        <Canvas projectDetail={projectDetail} screenConfig={screenConfig} />
+        <Canvas projectDetail={projectDetail} screenConfig={screenConfig} loading={loading} />
       </div>
     </div>
   );

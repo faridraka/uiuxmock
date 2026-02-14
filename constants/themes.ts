@@ -10,7 +10,7 @@ export const THEMES = {
     popoverForeground: "#E6E9F2",
 
     primary: "#7C8CFF",
-    primaryRgb: "124,140,255",
+    primaryRgb: "124, 140, 255",
     primaryForeground: "#0B1020",
 
     secondary: "#2A315A",
@@ -30,13 +30,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#7C8CFF",
-      "#5EEAD4",
-      "#F472B6",
-      "#FBBF24",
-      "#60A5FA"
-    ]
+    chart: ["#7C8CFF", "#5EEAD4", "#F472B6", "#FBBF24", "#60A5FA"]
   },
 
   DUSTY_ORCHID: {
@@ -50,7 +44,7 @@ export const THEMES = {
     popoverForeground: "#2C2433",
 
     primary: "#9D7BB0",
-    primaryRgb: "157,123,176",
+    primaryRgb: "157, 123, 176",
     primaryForeground: "#FFFFFF",
 
     secondary: "#E6DAEE",
@@ -70,13 +64,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#9D7BB0",
-      "#C084FC",
-      "#F472B6",
-      "#FBBF24",
-      "#60A5FA"
-    ]
+    chart: ["#9D7BB0", "#C084FC", "#F472B6", "#FBBF24", "#60A5FA"]
   },
 
   CITRUS_SLATE: {
@@ -90,7 +78,7 @@ export const THEMES = {
     popoverForeground: "#E5E7EB",
 
     primary: "#FACC15",
-    primaryRgb: "250,204,21",
+    primaryRgb: "250, 204, 21",
     primaryForeground: "#0F172A",
 
     secondary: "#1F2933",
@@ -110,13 +98,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#FACC15",
-      "#22D3EE",
-      "#A3E635",
-      "#FB7185",
-      "#60A5FA"
-    ]
+    chart: ["#FACC15", "#22D3EE", "#A3E635", "#FB7185", "#60A5FA"]
   },
 
   MOSS_PARCHMENT: {
@@ -130,7 +112,7 @@ export const THEMES = {
     popoverForeground: "#2F2F1F",
 
     primary: "#6B8E23",
-    primaryRgb: "107,142,35",
+    primaryRgb: "107, 142, 35",
     primaryForeground: "#FFFFFF",
 
     secondary: "#E6E3D3",
@@ -150,13 +132,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#6B8E23",
-      "#A3B18A",
-      "#EAB308",
-      "#FB923C",
-      "#60A5FA"
-    ]
+    chart: ["#6B8E23", "#A3B18A", "#EAB308", "#FB923C", "#60A5FA"]
   },
 
   POLAR_MINT: {
@@ -170,7 +146,7 @@ export const THEMES = {
     popoverForeground: "#0F172A",
 
     primary: "#2DD4BF",
-    primaryRgb: "45,212,191",
+    primaryRgb: "45, 212, 191",
     primaryForeground: "#0F172A",
 
     secondary: "#E0F2F1",
@@ -190,13 +166,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#2DD4BF",
-      "#67E8F9",
-      "#A5F3FC",
-      "#60A5FA",
-      "#818CF8"
-    ]
+    chart: ["#2DD4BF", "#67E8F9", "#A5F3FC", "#60A5FA", "#818CF8"]
   },
 
   OBSIDIAN_BLOOM: {
@@ -210,7 +180,7 @@ export const THEMES = {
     popoverForeground: "#FAFAFA",
 
     primary: "#EC4899",
-    primaryRgb: "236,72,153",
+    primaryRgb: "236, 72, 153",
     primaryForeground: "#09090B",
 
     secondary: "#1C1C1F",
@@ -230,16 +200,9 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#EC4899",
-      "#8B5CF6",
-      "#22D3EE",
-      "#FACC15",
-      "#4ADE80"
-    ]
+    chart: ["#EC4899", "#8B5CF6", "#22D3EE", "#FACC15", "#4ADE80"]
   },
 
-  // Tambahan theme ekstra
   NEON_NOIR: {
     background: "#050507",
     foreground: "#EDEDED",
@@ -251,7 +214,7 @@ export const THEMES = {
     popoverForeground: "#EDEDED",
 
     primary: "#00E5FF",
-    primaryRgb: "0,229,255",
+    primaryRgb: "0, 229, 255",
     primaryForeground: "#050507",
 
     secondary: "#1A1A22",
@@ -271,13 +234,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: [
-      "#00E5FF",
-      "#A855F7",
-      "#F43F5E",
-      "#FACC15",
-      "#22C55E"
-    ]
+    chart: ["#00E5FF", "#A855F7", "#F43F5E", "#FACC15", "#22C55E"]
   }
 } as const;
 
@@ -292,7 +249,7 @@ export const THEME_NAME_LIST = [
 ] as const;
 
 export type ThemeKey = keyof typeof THEMES;
-export type ThemeName = (typeof THEMES)[ThemeKey]
+export type Theme = (typeof THEMES)[ThemeKey];
 
 export function themeToCssVars(theme: any) {
   return `

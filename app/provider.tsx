@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SettingContext } from "@/context/SettingContext";
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   const [userDetail, setUserDetail] = useState();
+  const [settingsDetail, setSettingsDetail] = useState()
 
   const CreateNewUser = async () => {
     const res = await axios.post("/api/user", {});
@@ -19,15 +21,17 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-      <ThemeProvider
-        attribute={"class"}
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-        storageKey="theme"
-      >
-        <div>{children}</div>
-      </ThemeProvider>
+      <SettingContext.Provider value={{settingsDetail, setSettingsDetail}}>
+        <ThemeProvider
+          attribute={"class"}
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="theme"
+        >
+          <div>{children}</div>
+        </ThemeProvider>
+      </SettingContext.Provider>
     </UserDetailContext.Provider>
   );
 };

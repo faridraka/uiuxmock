@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { THEME_NAME_LIST, THEMES } from "@/constants/themes";
+import { SettingContext } from "@/context/SettingContext";
 import { ProjectType } from "@/types/type";
 import { Camera, Share, Sparkles } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 type Props = {
   projectDetail: ProjectType | undefined;
@@ -18,9 +19,19 @@ const SettingsSection = ({ projectDetail }: Props) => {
     projectDetail?.projectName || "",
   );
   const [userNewScreenInput, setUserNewScreenInput] = useState("");
+  const { setSettingsDetail } = useContext(SettingContext);
+
+  const onThemeSelect = (theme: string) => {
+    setSelectedTheme(theme);
+    setSettingsDetail((prev: any) => ({
+      ...prev,
+      theme: theme,
+    }));
+  };
 
   useEffect(() => {
     setProjectName(projectDetail?.projectName || "");
+    setSelectedTheme(projectDetail?.theme as string);
   }, [projectDetail]);
 
   return (
@@ -32,7 +43,13 @@ const SettingsSection = ({ projectDetail }: Props) => {
         <Input
           placeholder="Project Name"
           value={projectName}
-          onChange={(event) => setProjectName(event?.target?.value)}
+          onChange={(event) => {
+            setProjectName(event?.target?.value);
+            setSettingsDetail((prev: any) => ({
+              ...prev,
+              projectName: projectName,
+            }));
+          }}
         />
       </div>
 
@@ -57,7 +74,7 @@ const SettingsSection = ({ projectDetail }: Props) => {
               <div
                 key={index}
                 className={`p-3 border rounded-xl mb-2 ${selectedTheme === theme && "border-primary bg-primary/20"}`}
-                onClick={() => setSelectedTheme(theme)}
+                onClick={() => onThemeSelect(theme)}
               >
                 <h2>{theme}</h2>
                 <div className="flex gap-2">

@@ -9,6 +9,7 @@ import ProjectHeader from "./_shared/ProjectHeader";
 import SettingsSection from "./_shared/SettingsSection";
 import Canvas from "./_shared/Canvas";
 import { SettingContext } from "@/context/SettingContext";
+import { RefreshDataContext } from "@/context/RefreshDataContext";
 
 const ProjectCanvasPlaygrond = () => {
   const { projectId } = useParams();
@@ -18,6 +19,8 @@ const ProjectCanvasPlaygrond = () => {
   const { setSettingsDetail } = useContext(SettingContext)
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState("Loading");
+  const { refreshData, setRefreshData } = useContext(RefreshDataContext)
+  
 
   const GetProjectDetail = async () => {
     setLoading(true);
@@ -81,6 +84,12 @@ const ProjectCanvasPlaygrond = () => {
   }, [projectId]);
 
   useEffect(() => {
+    if(refreshData?.method === "screenConfig"){
+      GetProjectDetail()
+    }
+  }, [refreshData])
+
+  useEffect(() => {
     if (projectDetail && screenConfigOriginal && screenConfigOriginal.length == 0) {
       generateScreenConfig();
     } else if (projectDetail && screenConfigOriginal) {
@@ -103,7 +112,7 @@ const ProjectCanvasPlaygrond = () => {
         )}
         {/* Settings Canvas */}
         <SettingsSection projectDetail={projectDetail} />
-        <Canvas projectDetail={projectDetail} screenConfig={screenConfig} loading={loading} />
+        <Canvas projectDetail={projectDetail} screenConfig={screenConfig}/>
       </div>
     </div>
   );

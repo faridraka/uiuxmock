@@ -68,6 +68,6 @@ export async function PUT(req: NextRequest) {
 
     return NextResponse.json(result[0]);
   } catch (err) {
-    console.log(err);
+    return NextResponse.json({msg: "Error"})
   }
 }

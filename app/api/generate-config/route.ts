@@ -2,8 +2,8 @@ import { db } from "@/config/db";
 import { openai } from "@/config/openai";
 import { projectTable, screenConfigTable } from "@/config/schema";
 import { APP_LAYOUT_CONFIG_PROMPT } from "@/constants/prompt";
-import { ScreenConfigType } from "@/types/type";
-import { eq } from "drizzle-orm";
+import { currentUser } from "@clerk/nextjs/server";
+import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -42,12 +42,15 @@ export async function POST(req: NextRequest) {
 
     if (JSONResult) {
       // Update Project Table
-      await db.update(projectTable).set({
-        projectVisualDescription: JSONResult?.projectVisualDescription,
-        projectName: JSONResult?.projectName,
-        theme: JSONResult?.theme,
-        config: response.output_text
-      }).where(eq(projectTable.projectId, projectId as string));
+      await db
+        .update(projectTable)
+        .set({
+          projectVisualDescription: JSONResult?.projectVisualDescription,
+          projectName: JSONResult?.projectName,
+          theme: JSONResult?.theme,
+          config: response.output_text,
+        })
+        .where(eq(projectTable.projectId, projectId as string));
 
       // Save To Database
 
@@ -61,10 +64,31 @@ export async function POST(req: NextRequest) {
         });
       });
       return NextResponse.json(JSONResult);
-    } else{
-      return NextResponse.json({ msg: "Failed AI output text"})
+    } else {
+      return NextResponse.json({ msg: "Failed AI output text" });
     }
   } catch (err) {
     return NextResponse.json({ msg: "Internal Server Error" });
   }
+}
+
+export async function DELETE(req: NextRequest) {
+  const projectId = req.nextUrl.searchParams.get("projectId");
+  const screenId = req.nextUrl.searchParams.get("screenId");
+
+  const user = await currentUser();
+  if (!user) {
+    return NextResponse.json({ msg: "Unauthorized User", status: 403 });
+  }
+
+  const result = await db
+    .delete(screenConfigTable)
+    .where(
+      and(
+        eq(screenConfigTable.projectId, projectId as string),
+        eq(screenConfigTable.screenId, screenId as string),
+      ),
+    );
+
+  return NextResponse.json({msg: "Deleted"})
 }

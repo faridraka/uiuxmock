@@ -23,8 +23,8 @@ const Canvas = ({ projectDetail, screenConfig, loading }: props) => {
 
   const isMobile = projectDetail?.device == "mobile";
 
-  const SCREEN_WIDTH = isMobile ? 400 : 1200;
-  const SCREEN_HEIGHT = isMobile ? 800 : 800;
+  const SCREEN_WIDTH = isMobile ? 400 : 1200 - 250;
+  const SCREEN_HEIGHT = 800;
   const GAP = 10;
 
   return (
@@ -48,7 +48,7 @@ const Canvas = ({ projectDetail, screenConfig, loading }: props) => {
             >
               {screenConfig?.map((screen, index) => (
                 <div key={index}>
-                  {screen?.code && !loading ? (
+                  {screen?.code ? (
                     <ScreenFrame
                       x={index * (SCREEN_WIDTH + GAP)}
                       y={0}
@@ -57,6 +57,7 @@ const Canvas = ({ projectDetail, screenConfig, loading }: props) => {
                       setPanningEnabled={setPanningEnabled}
                       htmlCode={screen?.code}
                       projectDetail={projectDetail}
+                      screen={screen}
                     />
                   ) : (
                     <div

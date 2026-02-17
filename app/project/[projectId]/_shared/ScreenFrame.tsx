@@ -2,10 +2,12 @@
 
 import { ThemeKey, THEMES, themeToCssVars } from "@/constants/themes";
 import { SettingContext } from "@/context/SettingContext";
-import { ProjectType } from "@/types/type";
+import { ProjectType, ScreenConfigType } from "@/types/type";
 import { GripVertical } from "lucide-react";
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
+import ScreenHandler from "./ScreenHandler";
+import { HtmlWrapper } from "@/constants/htmlWrapper";
 
 type props = {
   x: number;
@@ -15,6 +17,7 @@ type props = {
   setPanningEnabled: (enabled: boolean) => void;
   htmlCode: string | undefined;
   projectDetail: ProjectType | undefined;
+  screen: ScreenConfigType | undefined
 };
 const ScreenFrame = ({
   x,
@@ -24,38 +27,13 @@ const ScreenFrame = ({
   setPanningEnabled,
   htmlCode,
   projectDetail,
+  screen
 }: props) => {
   const { settingsDetail } = useContext(SettingContext)
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const theme = THEMES[(settingsDetail?.theme ?? projectDetail?.theme) as ThemeKey];
 
-  const html = `
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Iconify -->
-  <script src="https://code.iconify.design/iconify-icon/3.0.0/iconify-icon.min.js"></script>
-
-  <style>
-    ${themeToCssVars(theme)}
-  </style>
-</head>
-
-<body class="bg-background text-foreground w-full">
-  ${htmlCode ?? ""}
-</body>
-</html>
-`;
+  const html = HtmlWrapper(theme, htmlCode as string)
 
   const [size, setSize] = useState({ width, height });
 
@@ -159,9 +137,9 @@ const ScreenFrame = ({
       onResizeStart={() => setPanningEnabled(false)}
       onResizeStop={() => setPanningEnabled(true)}
     >
-      <div className="drag-handle flex flex-row items-center gap-2 cursor-move p-2">
+      <div className="drag-handle flex flex-row items-center gap-2 bg-gray-300/70 dark:bg-gray-700/70 cursor-move px-2 py-4 rounded-2xl">
         {" "}
-        <GripVertical className="text-gray-500 h-4 w-4" /> Drag Here
+        <ScreenHandler screen={screen} theme={theme} iframeRef={iframeRef} projectId={projectDetail?.projectId as string} />
       </div>
       <iframe
         ref={iframeRef}

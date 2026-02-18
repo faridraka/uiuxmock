@@ -1,6 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ProjectType, ScreenConfigType } from "@/types/type";
+import { Minus, Plus, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import {
   TransformComponent,
@@ -8,9 +11,6 @@ import {
   useControls,
 } from "react-zoom-pan-pinch";
 import ScreenFrame from "./ScreenFrame";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Minus, Plus, RefreshCw, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 type props = {
   projectDetail: ProjectType | undefined;
@@ -25,7 +25,6 @@ const Canvas = ({ projectDetail, screenConfig, loading }: props) => {
 
   const SCREEN_WIDTH = isMobile ? 400 : 1200 - 250;
   const SCREEN_HEIGHT = 800;
-  const GAP = 10;
 
   return (
     <div className="w-full h-[calc(100vh-72px)] bg-gray-200/20 dark:bg-gray-800/20 bg-[radial-gradient(rgba(0,0,0,0.15)_1px,transparent_1px)] dark:bg-[radial-gradient(rgba(255,255,255,0.15)_1px,transparent_1px)] bg-size-[20px_20px]">
@@ -44,13 +43,14 @@ const Canvas = ({ projectDetail, screenConfig, loading }: props) => {
           <>
             <Controls />
             <TransformComponent
-              wrapperStyle={{ width: "100%", height: "100%" }}
+              wrapperStyle={{ width: "100%", height: "100%",  }}
+              contentStyle={{ display:"flex", gap: "20px", flexDirection:"row"}}
             >
               {screenConfig?.map((screen, index) => (
                 <div key={index}>
                   {screen?.code ? (
                     <ScreenFrame
-                      x={index * (SCREEN_WIDTH + GAP)}
+                      x={index * (SCREEN_WIDTH)}
                       y={0}
                       width={SCREEN_WIDTH}
                       height={SCREEN_HEIGHT}

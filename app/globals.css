@@ -181,6 +181,19 @@ body {
   letter-spacing: var(--tracking-normal);
 }
 
+::-webkit-scrollbar{
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  -o-border-radius: 40px;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

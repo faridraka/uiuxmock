@@ -289,5 +289,19 @@ export function themeToCssVars(theme: any) {
     --chart-4: ${theme.chart?.[3]};
     --chart-5: ${theme.chart?.[4]};
   }
+
+  ::-webkit-scrollbar{
+    width: 4px;
+    height: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 40px;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    -ms-border-radius: 40px;
+    -o-border-radius: 40px;
+  }
   `;
 }

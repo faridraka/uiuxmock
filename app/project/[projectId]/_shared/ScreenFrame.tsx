@@ -1,13 +1,12 @@
 "use client";
 
-import { ThemeKey, THEMES, themeToCssVars } from "@/constants/themes";
+import { HtmlWrapper } from "@/constants/htmlWrapper";
+import { ThemeKey, THEMES } from "@/constants/themes";
 import { SettingContext } from "@/context/SettingContext";
 import { ProjectType, ScreenConfigType } from "@/types/type";
-import { GripVertical } from "lucide-react";
-import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import ScreenHandler from "./ScreenHandler";
-import { HtmlWrapper } from "@/constants/htmlWrapper";
 
 type props = {
   x: number;

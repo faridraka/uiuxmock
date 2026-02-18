@@ -30,41 +30,41 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: ["#7C8CFF", "#5EEAD4", "#F472B6", "#FBBF24", "#60A5FA"]
+    chart: ["#7C8CFF", "#5EEAD4", "#F472B6", "#FBBF24", "#60A5FA"],
   },
 
   DUSTY_ORCHID: {
-    background: "#F5F2F7",
-    foreground: "#2C2433",
+    background: "#F6F3F8",
+    foreground: "#2B2230",
 
     card: "#FFFFFF",
-    cardForeground: "#2C2433",
+    cardForeground: "#2B2230",
 
     popover: "#FFFFFF",
-    popoverForeground: "#2C2433",
+    popoverForeground: "#2B2230",
 
-    primary: "#9D7BB0",
-    primaryRgb: "157, 123, 176",
+    primary: "#9A74B5",
+    primaryRgb: "154, 116, 181",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#E6DAEE",
-    secondaryForeground: "#2C2433",
+    secondary: "#EEE6F3",
+    secondaryForeground: "#2B2230",
 
-    muted: "#EFE8F3",
-    mutedForeground: "#6B5E75",
+    muted: "#F3EDF6",
+    mutedForeground: "#6F617A",
 
-    accent: "#C4A1D8",
-    accentForeground: "#2C2433",
+    accent: "#C6A4DB",
+    accentForeground: "#2B2230",
 
     destructive: "#E2556E",
 
-    border: "#E1D4EA",
-    input: "#E1D4EA",
-    ring: "#9D7BB0",
+    border: "#E7DFF0",
+    input: "#E7DFF0",
+    ring: "#9A74B5",
 
     radius: "0.75rem",
 
-    chart: ["#9D7BB0", "#C084FC", "#F472B6", "#FBBF24", "#60A5FA"]
+    chart: ["#9A74B5", "#C084FC", "#F9A8D4", "#FDE68A", "#93C5FD"],
   },
 
   CITRUS_SLATE: {
@@ -98,45 +98,45 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: ["#FACC15", "#22D3EE", "#A3E635", "#FB7185", "#60A5FA"]
+    chart: ["#FACC15", "#22D3EE", "#A3E635", "#FB7185", "#60A5FA"],
   },
 
   MOSS_PARCHMENT: {
-    background: "#FAF8F2",
-    foreground: "#2F2F1F",
+    background: "#FBF9F4",
+    foreground: "#2E2E1E",
 
     card: "#FFFFFF",
-    cardForeground: "#2F2F1F",
+    cardForeground: "#2E2E1E",
 
     popover: "#FFFFFF",
-    popoverForeground: "#2F2F1F",
+    popoverForeground: "#2E2E1E",
 
-    primary: "#6B8E23",
-    primaryRgb: "107, 142, 35",
+    primary: "#6A8F2A",
+    primaryRgb: "106, 143, 42",
     primaryForeground: "#FFFFFF",
 
-    secondary: "#E6E3D3",
-    secondaryForeground: "#2F2F1F",
+    secondary: "#ECE8D8",
+    secondaryForeground: "#2E2E1E",
 
-    muted: "#EFECDC",
-    mutedForeground: "#6B6B4F",
+    muted: "#F2EFDF",
+    mutedForeground: "#6A6A4A",
 
-    accent: "#A3B18A",
-    accentForeground: "#2F2F1F",
+    accent: "#A8BC8A",
+    accentForeground: "#2E2E1E",
 
     destructive: "#C2410C",
 
-    border: "#DDD8C4",
-    input: "#DDD8C4",
-    ring: "#6B8E23",
+    border: "#E2DDC8",
+    input: "#E2DDC8",
+    ring: "#6A8F2A",
 
     radius: "0.75rem",
 
-    chart: ["#6B8E23", "#A3B18A", "#EAB308", "#FB923C", "#60A5FA"]
+    chart: ["#6A8F2A", "#A8BC8A", "#EAB308", "#FB923C", "#93C5FD"],
   },
 
   POLAR_MINT: {
-    background: "#F8FAFC",
+    background: "#F9FBFC",
     foreground: "#0F172A",
 
     card: "#FFFFFF",
@@ -145,28 +145,28 @@ export const THEMES = {
     popover: "#FFFFFF",
     popoverForeground: "#0F172A",
 
-    primary: "#2DD4BF",
-    primaryRgb: "45, 212, 191",
+    primary: "#2EC4B6",
+    primaryRgb: "46, 196, 182",
     primaryForeground: "#0F172A",
 
-    secondary: "#E0F2F1",
+    secondary: "#E6F4F2",
     secondaryForeground: "#0F172A",
 
-    muted: "#F1F5F9",
+    muted: "#F1F7F8",
     mutedForeground: "#64748B",
 
-    accent: "#67E8F9",
+    accent: "#7DD3FC",
     accentForeground: "#0F172A",
 
     destructive: "#EF4444",
 
-    border: "#E2E8F0",
-    input: "#E2E8F0",
-    ring: "#2DD4BF",
+    border: "#E3EEF0",
+    input: "#E3EEF0",
+    ring: "#2EC4B6",
 
     radius: "0.75rem",
 
-    chart: ["#2DD4BF", "#67E8F9", "#A5F3FC", "#60A5FA", "#818CF8"]
+    chart: ["#2EC4B6", "#7DD3FC", "#A5F3FC", "#60A5FA", "#818CF8"],
   },
 
   OBSIDIAN_BLOOM: {
@@ -200,7 +200,7 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: ["#EC4899", "#8B5CF6", "#22D3EE", "#FACC15", "#4ADE80"]
+    chart: ["#EC4899", "#8B5CF6", "#22D3EE", "#FACC15", "#4ADE80"],
   },
 
   NEON_NOIR: {
@@ -234,8 +234,8 @@ export const THEMES = {
 
     radius: "0.75rem",
 
-    chart: ["#00E5FF", "#A855F7", "#F43F5E", "#FACC15", "#22C55E"]
-  }
+    chart: ["#00E5FF", "#A855F7", "#F43F5E", "#FACC15", "#22C55E"],
+  },
 } as const;
 
 export const THEME_NAME_LIST = [
@@ -245,7 +245,7 @@ export const THEME_NAME_LIST = [
   "MOSS_PARCHMENT",
   "POLAR_MINT",
   "OBSIDIAN_BLOOM",
-  "NEON_NOIR"
+  "NEON_NOIR",
 ] as const;
 
 export type ThemeKey = keyof typeof THEMES;

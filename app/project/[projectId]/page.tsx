@@ -1,15 +1,15 @@
 "use client";
 
+import { RefreshDataContext } from "@/context/RefreshDataContext";
+import { SettingContext } from "@/context/SettingContext";
 import { ProjectType, ScreenConfigType } from "@/types/type";
 import axios from "axios";
-import { Loader } from "lucide-react";
+import { Loader2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
+import Canvas from "./_shared/Canvas";
 import ProjectHeader from "./_shared/ProjectHeader";
 import SettingsSection from "./_shared/SettingsSection";
-import Canvas from "./_shared/Canvas";
-import { SettingContext } from "@/context/SettingContext";
-import { RefreshDataContext } from "@/context/RefreshDataContext";
 
 const ProjectCanvasPlaygrond = () => {
   const { projectId } = useParams();
@@ -106,12 +106,12 @@ const ProjectCanvasPlaygrond = () => {
           <div className="p-3 absolute bg-blue-300/20 border-blue-400 border rounded-xl left-1/2 top-20 z-10">
             <h2 className="flex flex-row gap-2 items-center">
               {" "}
-              <Loader className="animate-spin" /> {loadingMsg}{" "}
+              <Loader2Icon className="animate-spin" /> {loadingMsg}{" "}
             </h2>
           </div>
         )}
         {/* Settings Canvas */}
-        <SettingsSection projectDetail={projectDetail} />
+        <SettingsSection projectDetail={projectDetail} screenDescription={screenConfig?.[0]?.screenDescription ?? ""} />
         <Canvas projectDetail={projectDetail} screenConfig={screenConfig}/>
       </div>
     </div>

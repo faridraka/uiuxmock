@@ -4,22 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { THEME_NAME_LIST, THEMES } from "@/constants/themes";
+import { RefreshDataContext } from "@/context/RefreshDataContext";
 import { SettingContext } from "@/context/SettingContext";
 import { ProjectType } from "@/types/type";
-import { Camera, Share, Sparkles } from "lucide-react";
+import axios from "axios";
+import { Camera, Loader2Icon, Share, Sparkles } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
 type Props = {
   projectDetail: ProjectType | undefined;
+  screenDescription: string;
 };
 
-const SettingsSection = ({ projectDetail }: Props) => {
+const SettingsSection = ({ projectDetail, screenDescription }: Props) => {
   const [selectedTheme, setSelectedTheme] = useState("AURORA_INK");
   const [projectName, setProjectName] = useState(
     projectDetail?.projectName || "",
   );
   const [userNewScreenInput, setUserNewScreenInput] = useState("");
   const { setSettingsDetail } = useContext(SettingContext);
+  const [loading, setLoading] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState("Loading");
+  const { refreshData, setRefreshData } = useContext(RefreshDataContext);
 
   const onThemeSelect = (theme: string) => {
     setSelectedTheme(theme);
@@ -27,6 +33,22 @@ const SettingsSection = ({ projectDetail }: Props) => {
       ...prev,
       theme: theme,
     }));
+  };
+
+  const GenerateNewScreen = async () => {
+    setLoading(true);
+
+    const result = await axios.post("/api/generate-config", {
+      projectId: projectDetail?.projectId,
+      userInput: userNewScreenInput,
+      deviceType: projectDetail?.device,
+      theme: projectDetail?.theme,
+      oldScreenDescription: screenDescription,
+    });
+
+    console.log(result.data);
+    setRefreshData({ method: "screenConfig", date: Date.now() });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -37,6 +59,15 @@ const SettingsSection = ({ projectDetail }: Props) => {
   return (
     <div className="w-75 h-[calc(100vh-72px)] p-5 border-r">
       <h2 className="font-medium text-lg">Settings</h2>
+
+      {loading && (
+        <div className="p-3 absolute bg-blue-300/20 border-blue-400 border rounded-xl left-1/2 top-20 z-10">
+          <h2 className="flex flex-row gap-2 items-center">
+            {" "}
+            <Loader2Icon className="animate-spin" /> {loadingMsg}{" "}
+          </h2>
+        </div>
+      )}
 
       <div className="mt-3">
         <h2 className="text-sm mb-1">Project Name</h2>
@@ -60,9 +91,19 @@ const SettingsSection = ({ projectDetail }: Props) => {
           value={userNewScreenInput}
           onChange={(event) => setUserNewScreenInput(event.target.value)}
         />
-        <Button size={"sm"} className="mt-2 w-full">
+        <Button
+          size={"sm"}
+          className="mt-2 w-full"
+          onClick={GenerateNewScreen}
+          disabled={loading}
+        >
           {" "}
-          <Sparkles /> Generate with AI{" "}
+          {loading ? (
+            <Loader2Icon className="animate-spin" />
+          ) : (
+            <Sparkles />
+          )}{" "}
+          Generate with AI{" "}
         </Button>
       </div>
 

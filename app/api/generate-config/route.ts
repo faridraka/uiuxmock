@@ -1,13 +1,17 @@
 import { db } from "@/config/db";
 import { openai } from "@/config/openai";
 import { projectTable, screenConfigTable } from "@/config/schema";
-import { APP_LAYOUT_CONFIG_PROMPT } from "@/constants/prompt";
+import {
+  APP_LAYOUT_CONFIG_PROMPT,
+  GENERATE_NEW_SCREEN_IN_EXISTING_PROJECT_PROMPT,
+} from "@/constants/prompt";
 import { currentUser } from "@clerk/nextjs/server";
 import { and, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { userInput, deviceType, projectId } = await req.json();
+  const { userInput, deviceType, projectId, oldScreenDescription, theme } =
+    await req.json();
 
   try {
     const response = await openai.responses.create({
@@ -18,10 +22,12 @@ export async function POST(req: NextRequest) {
           content: [
             {
               type: "input_text",
-              text: APP_LAYOUT_CONFIG_PROMPT.replace(
-                "(deviceType)",
-                deviceType,
-              ),
+              text: oldScreenDescription
+                ? GENERATE_NEW_SCREEN_IN_EXISTING_PROJECT_PROMPT.replace(
+                    "(deviceType)",
+                    deviceType,
+                  ).replace("(theme)", theme)
+                : APP_LAYOUT_CONFIG_PROMPT.replace("(deviceType)", deviceType),
             },
           ],
         },
@@ -30,7 +36,7 @@ export async function POST(req: NextRequest) {
           content: [
             {
               type: "input_text",
-              text: userInput,
+              text: oldScreenDescription? userInput + " Old Screen Description is: " + oldScreenDescription :userInput,
             },
           ],
         },
@@ -42,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     if (JSONResult) {
       // Update Project Table
-      await db
+      !oldScreenDescription && await db
         .update(projectTable)
         .set({
           projectVisualDescription: JSONResult?.projectVisualDescription,
@@ -90,5 +96,5 @@ export async function DELETE(req: NextRequest) {
       ),
     );
 
-  return NextResponse.json({msg: "Deleted"})
+  return NextResponse.json({ msg: "Deleted" });
 }

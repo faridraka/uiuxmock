@@ -16,7 +16,8 @@ type props = {
   setPanningEnabled: (enabled: boolean) => void;
   htmlCode: string | undefined;
   projectDetail: ProjectType | undefined;
-  screen: ScreenConfigType | undefined
+  screen: ScreenConfigType | undefined,
+  iframeRef: any
 };
 const ScreenFrame = ({
   x,
@@ -26,15 +27,14 @@ const ScreenFrame = ({
   setPanningEnabled,
   htmlCode,
   projectDetail,
-  screen
+  screen,
+  iframeRef
 }: props) => {
   const { settingsDetail } = useContext(SettingContext)
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
-  const theme = THEMES[(settingsDetail?.theme ?? projectDetail?.theme) as ThemeKey];
-
-  const html = HtmlWrapper(theme, htmlCode as string)
-
   const [size, setSize] = useState({ width, height });
+  const localIframeRef = useRef<HTMLIFrameElement | null>(null);
+  const theme = THEMES[(settingsDetail?.theme ?? projectDetail?.theme) as ThemeKey];
+  const html = HtmlWrapper(theme, htmlCode as string)
 
   const measureIframeHeight = useCallback(() => {
     const iframe = iframeRef.current;
@@ -138,10 +138,13 @@ const ScreenFrame = ({
     >
       <div className="drag-handle flex flex-row items-center gap-2 bg-gray-300/70 dark:bg-gray-700/70 cursor-move px-2 py-4 rounded-2xl">
         {" "}
-        <ScreenHandler screen={screen} theme={theme} iframeRef={iframeRef} projectId={projectDetail?.projectId as string} />
+        <ScreenHandler screen={screen} theme={theme} iframeRef={localIframeRef} projectId={projectDetail?.projectId as string} />
       </div>
       <iframe
-        ref={iframeRef}
+        ref={(el) => {
+          iframeRef(el);
+          localIframeRef.current = el
+        }}
         className="w-full h-[calc(100%-40px)] bg-background rounded-2xl mt-5"
         sandbox="allow-same-origin allow-scripts"
         srcDoc={html}

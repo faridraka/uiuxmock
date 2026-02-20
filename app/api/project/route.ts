@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  const { projectName, theme, projectId } = await req.json();
+  const { projectName, theme, projectId, screenShot } = await req.json();
 
   try {
     const result = await db
@@ -62,6 +62,7 @@ export async function PUT(req: NextRequest) {
       .set({
         projectName,
         theme,
+        screenshot: screenShot as string | null
       })
       .where(eq(projectTable.projectId, projectId))
       .returning();

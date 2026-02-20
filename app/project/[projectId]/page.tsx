@@ -14,13 +14,14 @@ import SettingsSection from "./_shared/SettingsSection";
 const ProjectCanvasPlaygrond = () => {
   const { projectId } = useParams();
   const [projectDetail, setProjectDetail] = useState<ProjectType>();
-  const [screenConfigOriginal, setScreenConfigOriginal] = useState<ScreenConfigType[]>();
+  const [screenConfigOriginal, setScreenConfigOriginal] =
+    useState<ScreenConfigType[]>();
   const [screenConfig, setScreenConfig] = useState<ScreenConfigType[]>();
-  const { setSettingsDetail } = useContext(SettingContext)
+  const { setSettingsDetail } = useContext(SettingContext);
   const [loading, setLoading] = useState(false);
   const [loadingMsg, setLoadingMsg] = useState("Loading");
-  const { refreshData, setRefreshData } = useContext(RefreshDataContext)
-  
+  const { refreshData, setRefreshData } = useContext(RefreshDataContext);
+  const [takeScreenshot, setTakeScreenshot] = useState<any>();
 
   const GetProjectDetail = async () => {
     setLoading(true);
@@ -30,7 +31,7 @@ const ProjectCanvasPlaygrond = () => {
     setProjectDetail(result?.data?.projectDetail);
     setScreenConfigOriginal(result?.data?.screenConfig);
     setScreenConfig(result?.data?.screenConfig);
-    setSettingsDetail(result?.data?.projectDetail)
+    setSettingsDetail(result?.data?.projectDetail);
 
     // if(result?.data?.screenConfig.length == 0){
     //   generateScreenConfig();
@@ -69,11 +70,11 @@ const ProjectCanvasPlaygrond = () => {
         screenName: screen?.screenName,
         purpose: screen?.purpose,
         screenDescription: screen?.screenDescription,
-        projectVisualDescription: projectDetail?.projectVisualDescription
+        projectVisualDescription: projectDetail?.projectVisualDescription,
       });
-      setScreenConfig(prev => prev?.map((item, i) : any => 
-        (i === index ? result.data : item)
-      ))
+      setScreenConfig((prev) =>
+        prev?.map((item, i): any => (i === index ? result.data : item)),
+      );
     }
 
     setLoading(false);
@@ -84,13 +85,17 @@ const ProjectCanvasPlaygrond = () => {
   }, [projectId]);
 
   useEffect(() => {
-    if(refreshData?.method === "screenConfig"){
-      GetProjectDetail()
+    if (refreshData?.method === "screenConfig") {
+      GetProjectDetail();
     }
-  }, [refreshData])
+  }, [refreshData]);
 
   useEffect(() => {
-    if (projectDetail && screenConfigOriginal && screenConfigOriginal.length == 0) {
+    if (
+      projectDetail &&
+      screenConfigOriginal &&
+      screenConfigOriginal.length == 0
+    ) {
       generateScreenConfig();
     } else if (projectDetail && screenConfigOriginal) {
       GenerateScreenUIUX();
@@ -101,7 +106,7 @@ const ProjectCanvasPlaygrond = () => {
     <div>
       <ProjectHeader />
 
-      <div className="flex" >
+      <div className="flex">
         {loading && (
           <div className="p-3 absolute bg-blue-300/20 border-blue-400 border rounded-xl left-1/2 top-20 z-10">
             <h2 className="flex flex-row gap-2 items-center">
@@ -111,8 +116,12 @@ const ProjectCanvasPlaygrond = () => {
           </div>
         )}
         {/* Settings Canvas */}
-        <SettingsSection projectDetail={projectDetail} screenDescription={screenConfig?.[0]?.screenDescription ?? ""} />
-        <Canvas projectDetail={projectDetail} screenConfig={screenConfig}/>
+        <SettingsSection
+          projectDetail={projectDetail}
+          screenDescription={screenConfig?.[0]?.screenDescription ?? ""}
+          takeScreenshot={() => setTakeScreenshot(Date.now())}
+        />
+        <Canvas projectDetail={projectDetail} screenConfig={screenConfig} takeScreenshot={takeScreenshot} />
       </div>
     </div>
   );

@@ -14,9 +14,10 @@ import React, { useContext, useEffect, useState } from "react";
 type Props = {
   projectDetail: ProjectType | undefined;
   screenDescription: string;
+  takeScreenshot: any
 };
 
-const SettingsSection = ({ projectDetail, screenDescription }: Props) => {
+const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: Props) => {
   const [selectedTheme, setSelectedTheme] = useState("AURORA_INK");
   const [projectName, setProjectName] = useState(
     projectDetail?.projectName || "",
@@ -155,7 +156,7 @@ const SettingsSection = ({ projectDetail, screenDescription }: Props) => {
       <div className="mt-5">
         <h2 className="text-sm mb-1">Extras</h2>
         <div className="flex gap-3">
-          <Button size={"sm"} variant={"outline"} className="mt-2">
+          <Button size={"sm"} variant={"outline"} className="mt-2" onClick={() => takeScreenshot()}>
             <Camera /> Screenshot
           </Button>
           <Button size={"sm"} variant={"outline"} className="mt-2">

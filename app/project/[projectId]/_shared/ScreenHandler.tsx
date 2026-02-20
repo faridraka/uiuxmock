@@ -56,6 +56,7 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
   const { refreshData, setRefreshData } = useContext(RefreshDataContext);
   const [editUserInput, setEditUserInput] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  
   const takeIframeScreenshot = async () => {
     const iframe = iframeRef?.current;
     if (!iframe) return;

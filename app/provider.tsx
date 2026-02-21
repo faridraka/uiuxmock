@@ -32,7 +32,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
             disableTransitionOnChange
             storageKey="theme"
           >
-            <div>{children}</div>
+            {children}
           </ThemeProvider>
         </RefreshDataContext.Provider>
       </SettingContext.Provider>

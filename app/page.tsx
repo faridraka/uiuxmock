@@ -1,11 +1,16 @@
+import { currentUser } from "@clerk/nextjs/server";
 import Header from "./_shared/Header";
 import Hero from "./_shared/Hero";
+import ProjectList from "./_shared/ProjectList";
 
-export default function Home() {
+export default async function Home() {
+  const user = await currentUser()
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       <Header />
       <Hero />
+      {user && <ProjectList />}
 
       {/* Background particle */}
       <div className="pointer-events-none -z-10 absolute -top-40 -left-40 w-125 h-125 bg-purple-400/20 blur-[120px] rounded-full" />

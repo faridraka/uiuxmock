@@ -26,19 +26,19 @@ export async function GET(req: NextRequest) {
   const user = await currentUser();
 
   try {
-    if(!projectId){
+    if (!projectId) {
       const result = await db
-      .select()
-      .from(projectTable)
-      .where(
+        .select()
+        .from(projectTable)
+        .where(
           eq(
             projectTable.userId,
             user?.primaryEmailAddress?.emailAddress as string,
           ),
         )
-      .orderBy(desc(projectTable.id))
+        .orderBy(desc(projectTable.id));
 
-      return NextResponse.json(result)
+      return NextResponse.json(result);
     }
     const result = await db
       .select()
@@ -52,6 +52,10 @@ export async function GET(req: NextRequest) {
           ),
         ),
       );
+
+    if (!result.length) {
+      return NextResponse.json({ message: "Not Found" }, { status: 404 });
+    }
 
     const ScreenConfig = await db
       .select()
@@ -76,13 +80,17 @@ export async function PUT(req: NextRequest) {
       .set({
         projectName,
         theme,
-        screenshot: screenShot as string | null
+        screenshot: screenShot as string | null,
       })
       .where(eq(projectTable.projectId, projectId))
       .returning();
 
+    if (!result.length) {
+      return NextResponse.json({ message: "Not Found" }, { status: 404 });
+    }
+
     return NextResponse.json(result[0]);
   } catch (err) {
-    return NextResponse.json({msg: "Error"})
+    return NextResponse.json({ msg: "Error" });
   }
 }

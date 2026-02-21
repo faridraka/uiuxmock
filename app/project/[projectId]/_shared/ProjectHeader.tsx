@@ -3,7 +3,7 @@
 import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { SettingContext } from "@/context/SettingContext";
-import axios from "axios";
+import api from "@/lib/axios";
 import { Loader2, Save } from "lucide-react";
 import Image from "next/image";
 import { useContext, useState } from "react";
@@ -16,7 +16,7 @@ const ProjectHeader = () => {
   const onSave = async () => {
     try {
       setLoading(true);
-      const result = await axios.put("/api/project", {
+      const result = await api.put("/api/project", {
         theme: settingsDetail?.theme,
         projectName: settingsDetail?.projectName,
         projectId: settingsDetail?.projectId,

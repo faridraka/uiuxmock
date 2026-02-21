@@ -16,9 +16,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { suggestions } from "@/constants/suggestions";
+import api from "@/lib/axios";
 import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
-import axios from "axios";
 import { ChevronRight, Loader, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -43,7 +43,7 @@ const Hero = () => {
 
     setLoading(true)
     const projectId = crypto.randomUUID();
-    const result = await axios.post("/api/project",{
+    const result = await api.post("/api/project",{
       projectId,
       userInput,
       device

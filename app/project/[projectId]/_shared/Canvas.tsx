@@ -2,7 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import api from "@/lib/axios";
 import { ProjectType, ScreenConfigType } from "@/types/type";
+import html2canvas from "html2canvas";
 import { Minus, Plus, RefreshCw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -10,10 +12,8 @@ import {
   TransformWrapper,
   useControls,
 } from "react-zoom-pan-pinch";
-import ScreenFrame from "./ScreenFrame";
 import { toast } from "sonner";
-import html2canvas from "html2canvas";
-import axios from "axios";
+import ScreenFrame from "./ScreenFrame";
 
 type props = {
   projectDetail: ProjectType | undefined;
@@ -131,7 +131,7 @@ const Canvas = ({
   };
 
   const updateProjectWithScreenshot = async(url: string) => {
-    const result = await axios.put("/api/project",{
+    const result = await api.put("/api/project",{
       screenShot : url,
       projectId: projectDetail?.projectId,
       theme: projectDetail?.theme,

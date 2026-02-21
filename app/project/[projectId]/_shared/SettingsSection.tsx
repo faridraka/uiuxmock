@@ -6,10 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { THEME_NAME_LIST, THEMES } from "@/constants/themes";
 import { RefreshDataContext } from "@/context/RefreshDataContext";
 import { SettingContext } from "@/context/SettingContext";
+import api from "@/lib/axios";
 import { ProjectType } from "@/types/type";
-import axios from "axios";
 import { Camera, Loader2Icon, Share, Sparkles } from "lucide-react";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 type Props = {
   projectDetail: ProjectType | undefined;
@@ -39,7 +39,7 @@ const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: P
   const GenerateNewScreen = async () => {
     setLoading(true);
 
-    const result = await axios.post("/api/generate-config", {
+    const result = await api.post("/api/generate-config", {
       projectId: projectDetail?.projectId,
       userInput: userNewScreenInput,
       deviceType: projectDetail?.device,
@@ -47,9 +47,9 @@ const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: P
       oldScreenDescription: screenDescription,
     });
 
-    console.log(result.data);
     setRefreshData({ method: "screenConfig", date: Date.now() });
     setLoading(false);
+    setUserNewScreenInput("")
   };
 
   useEffect(() => {

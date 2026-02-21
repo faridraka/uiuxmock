@@ -2,8 +2,8 @@
 
 import { RefreshDataContext } from "@/context/RefreshDataContext";
 import { SettingContext } from "@/context/SettingContext";
+import api from "@/lib/axios";
 import { ProjectType, ScreenConfigType } from "@/types/type";
-import axios from "axios";
 import { Loader2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -26,7 +26,7 @@ const ProjectCanvasPlaygrond = () => {
   const GetProjectDetail = async () => {
     setLoading(true);
     setLoadingMsg("Loading...");
-    const result = await axios.get("/api/project?projectId=" + projectId);
+    const result = await api.get("/api/project?projectId=" + projectId);
     console.log(result.data);
     setProjectDetail(result?.data?.projectDetail);
     setScreenConfigOriginal(result?.data?.screenConfig);
@@ -43,7 +43,7 @@ const ProjectCanvasPlaygrond = () => {
     setLoading(true);
     setLoadingMsg("Generating Screen Config...");
 
-    const result = await axios.post("/api/generate-config", {
+    const result = await api.post("/api/generate-config", {
       userInput: projectDetail?.userInput,
       deviceType: projectDetail?.device,
       projectId,
@@ -64,7 +64,7 @@ const ProjectCanvasPlaygrond = () => {
       if (screen.code) continue;
       setLoadingMsg("Generating Screen " + (index + 1));
 
-      const result = await axios.post("/api/generate-screen-ui", {
+      const result = await api.post("/api/generate-screen-ui", {
         projectId,
         screenId: screen?.screenId,
         screenName: screen?.screenName,

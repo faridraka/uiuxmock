@@ -16,17 +16,14 @@ import {
 import {
   Popover,
   PopoverContent,
-  PopoverDescription,
-  PopoverHeader,
-  PopoverTitle,
-  PopoverTrigger,
+  PopoverTrigger
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { HtmlWrapper } from "@/constants/htmlWrapper";
 import { Theme } from "@/constants/themes";
 import { RefreshDataContext } from "@/context/RefreshDataContext";
+import api from "@/lib/axios";
 import { ScreenConfigType } from "@/types/type";
-import axios from "axios";
 import html2canvas from "html2canvas";
 import {
   Code2Icon,
@@ -92,7 +89,7 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
   };
 
   const onDelete = async () => {
-    const result = await axios.delete(
+    const result = await api.delete(
       "/api/generate-config?projectId=" +
         projectId +
         "&screenId=" +
@@ -105,7 +102,7 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
   const editScreen = async () => {
     setLoading(true);
     toast.info("Regenerating New Screen, Please wait...");
-    const result = await axios.post("/api/edit-screen", {
+    const result = await api.post("/api/edit-screen", {
       projectId,
       screenId: screen?.screenId,
       userInput: editUserInput,

@@ -1,10 +1,10 @@
 "use client"
 
-import { ProjectType } from '@/types/type'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import ProjectCard from './ProjectCard'
 import { Skeleton } from '@/components/ui/skeleton'
+import api from '@/lib/axios'
+import { ProjectType } from '@/types/type'
+import { useEffect, useState } from 'react'
+import ProjectCard from './ProjectCard'
 
 const ProjectList = () => {
 
@@ -13,7 +13,7 @@ const ProjectList = () => {
 
   const GetProjects = async() => {
     setLoading(true)
-    const result = await axios.get("/api/project")
+    const result = await api.get("/api/project")
     setProjectList(result.data)
     setLoading(false)
   }

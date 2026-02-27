@@ -8,16 +8,22 @@ import { RefreshDataContext } from "@/context/RefreshDataContext";
 import { SettingContext } from "@/context/SettingContext";
 import api from "@/lib/axios";
 import { ProjectType } from "@/types/type";
+import { useAuth } from "@clerk/nextjs";
 import { Camera, Loader2Icon, Share, Sparkles } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type Props = {
   projectDetail: ProjectType | undefined;
   screenDescription: string;
-  takeScreenshot: any
+  takeScreenshot: any;
 };
 
-const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: Props) => {
+const SettingsSection = ({
+  projectDetail,
+  screenDescription,
+  takeScreenshot,
+}: Props) => {
   const [selectedTheme, setSelectedTheme] = useState("AURORA_INK");
   const [projectName, setProjectName] = useState(
     projectDetail?.projectName || "",
@@ -28,6 +34,9 @@ const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: P
   const [loadingMsg, setLoadingMsg] = useState("Loading");
   const { refreshData, setRefreshData } = useContext(RefreshDataContext);
 
+  const { has } = useAuth();
+  const hasPremiumAccess = has && has({ plan: "unlimited" });
+
   const onThemeSelect = (theme: string) => {
     setSelectedTheme(theme);
     setSettingsDetail((prev: any) => ({
@@ -37,19 +46,43 @@ const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: P
   };
 
   const GenerateNewScreen = async () => {
+    if(!userNewScreenInput){
+      return;
+    }
+    
     setLoading(true);
+    setLoadingMsg("Generating screen...");
 
-    const result = await api.post("/api/generate-config", {
-      projectId: projectDetail?.projectId,
-      userInput: userNewScreenInput,
-      deviceType: projectDetail?.device,
-      theme: projectDetail?.theme,
-      oldScreenDescription: screenDescription,
-    });
+    try {
+      if (!hasPremiumAccess) {
+        toast.error("Limited feature to paid users only");
+        return
+      }
 
-    setRefreshData({ method: "screenConfig", date: Date.now() });
-    setLoading(false);
-    setUserNewScreenInput("")
+      const result = await api.post("/api/generate-config", {
+        projectId: projectDetail?.projectId,
+        userInput: userNewScreenInput,
+        deviceType: projectDetail?.device,
+        theme: projectDetail?.theme,
+        oldScreenDescription: screenDescription,
+      });
+
+      setRefreshData({ method: "screenConfig", date: Date.now() });
+      setUserNewScreenInput("");
+      toast.success("Screen generated successfully 🚀");
+    } catch (err: any) {
+      console.error("Generate screen error:", err);
+
+      const message =
+        err?.response?.data?.msg ||
+        err?.message ||
+        "Something went wrong while generating the screen.";
+
+      toast.error(message);
+    } finally {
+      setLoading(false);
+      setUserNewScreenInput("");
+    }
   };
 
   useEffect(() => {
@@ -156,7 +189,12 @@ const SettingsSection = ({ projectDetail, screenDescription, takeScreenshot }: P
       <div className="mt-5">
         <h2 className="text-sm mb-1">Extras</h2>
         <div className="flex gap-3">
-          <Button size={"sm"} variant={"outline"} className="mt-2" onClick={() => takeScreenshot()}>
+          <Button
+            size={"sm"}
+            variant={"outline"}
+            className="mt-2"
+            onClick={() => takeScreenshot()}
+          >
             <Camera /> Screenshot
           </Button>
           <Button size={"sm"} variant={"outline"} className="mt-2">

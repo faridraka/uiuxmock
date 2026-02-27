@@ -22,39 +22,46 @@ import { useUser } from "@clerk/nextjs";
 import { ChevronRight, Loader, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const Hero = () => {
-  const [userInput, setUserInput] = useState("")
-  const [device, setDevice] = useState<string>("website")
-  const [loading, setLoading] = useState(false)
-  const { user } = useUser()
+  const [userInput, setUserInput] = useState("");
+  const [device, setDevice] = useState<string>("website");
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
   const router = useRouter();
 
-  const onCreateProject = async() => {
-    if(!user){
-      router.push("/sign-in")
-      return
+  const onCreateProject = async () => {
+    if (!user) {
+      router.push("/sign-in");
+      return;
     }
 
-    // Create a new project 
-    if(!userInput){
-      return 
+    // Create a new project
+    if (!userInput) {
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
     const projectId = crypto.randomUUID();
-    const result = await api.post("/api/project",{
+    const result = await api.post("/api/project", {
       projectId,
       userInput,
-      device
-    })
+      device,
+    });
 
-    console.log(result.data)
-    setLoading(false)
+    if (result.data?.msg == "Limited Exceed") {
+      toast.error("Already reached 2 project limit!");
+      setLoading(false);
+      return;
+    }
+
+    console.log(result.data);
+    setLoading(false);
 
     // Navigate to the project page
-    router.push('/project/' + projectId)
-  }
+    router.push("/project/" + projectId);
+  };
 
   return (
     <div className="p-10 md:px-24 lg:px-48 xl:px-60 mt-8">
@@ -98,7 +105,10 @@ const Hero = () => {
             onChange={(event) => setUserInput(event.target?.value)}
           />
           <InputGroupAddon align="block-end">
-            <Select defaultValue="website" onValueChange={(value) => setDevice(value)}>
+            <Select
+              defaultValue="website"
+              onValueChange={(value) => setDevice(value)}
+            >
               <SelectTrigger className="w-45">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
@@ -109,7 +119,13 @@ const Hero = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <InputGroupButton className="ml-auto" size="sm" variant="default" onClick={onCreateProject} disabled={loading} >
+            <InputGroupButton
+              className="ml-auto"
+              size="sm"
+              variant="default"
+              onClick={onCreateProject}
+              disabled={loading}
+            >
               {loading ? <Loader className="animate-spin" /> : <Send />}
             </InputGroupButton>
           </InputGroupAddon>
@@ -118,9 +134,15 @@ const Hero = () => {
 
       <div className="flex gap-3 mt-4">
         {suggestions.map((suggestion, index) => (
-          <div key={index} className="p-2 border rounded-2xl flex flex-col items-center bg-white dark:bg-gray-900 z-10 cursor-pointer" onClick={() => setUserInput(suggestion?.prompt)}>
+          <div
+            key={index}
+            className="p-2 border rounded-2xl flex flex-col items-center bg-white dark:bg-gray-900 z-10 cursor-pointer"
+            onClick={() => setUserInput(suggestion?.prompt)}
+          >
             <h2 className="text-lg">{suggestion?.icon}</h2>
-            <h2 className="text-center line-clamp-2 text-sm">{suggestion?.name}</h2>
+            <h2 className="text-center line-clamp-2 text-sm">
+              {suggestion?.name}
+            </h2>
           </div>
         ))}
       </div>

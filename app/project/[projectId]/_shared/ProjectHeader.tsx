@@ -6,6 +6,7 @@ import { SettingContext } from "@/context/SettingContext";
 import api from "@/lib/axios";
 import { Loader2, Save } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
 
@@ -31,12 +32,12 @@ const ProjectHeader = () => {
   };
   return (
     <div className="flex flex-row justify-between items-center p-4 shadow">
-      <div className="flex flex-row gap-2 items-center ">
+      <Link href={"/"} className="flex flex-row gap-2 items-center ">
         <Image src={"/logo.png"} height={40} width={40} alt="Logo" />
         <h2 className="text-xl font-semibold ">
           <span className="text-primary">UIUX</span> Mock
         </h2>
-      </div>
+      </Link>
       <div className="flex flex-row items-center justify-between gap-4">
         <ModeToggle />
         <Button onClick={onSave} disabled={loading}>

@@ -6,7 +6,7 @@ import api from "@/lib/axios";
 import { ProjectType, ScreenConfigType } from "@/types/type";
 import { Loader2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Canvas from "./_shared/Canvas";
 import ProjectHeader from "./_shared/ProjectHeader";
 import SettingsSection from "./_shared/SettingsSection";
@@ -22,6 +22,7 @@ const ProjectCanvasPlaygrond = () => {
   const [loadingMsg, setLoadingMsg] = useState("Loading");
   const { refreshData, setRefreshData } = useContext(RefreshDataContext);
   const [takeScreenshot, setTakeScreenshot] = useState<any>();
+  const hasGeneratedConfig = useRef(false);
 
   const GetProjectDetail = async () => {
     setLoading(true);
@@ -91,16 +92,15 @@ const ProjectCanvasPlaygrond = () => {
   }, [refreshData]);
 
   useEffect(() => {
-    if (
-      projectDetail &&
-      screenConfigOriginal &&
-      screenConfigOriginal.length == 0
-    ) {
+    if (!projectDetail || !screenConfigOriginal) return;
+
+    if (screenConfigOriginal.length === 0 && !hasGeneratedConfig.current) {
+      hasGeneratedConfig.current = true;
       generateScreenConfig();
-    } else if (projectDetail && screenConfigOriginal) {
+    } else if (screenConfigOriginal.length > 0) {
       GenerateScreenUIUX();
     }
-  }, [screenConfigOriginal, projectId]);
+  }, [projectDetail, screenConfigOriginal]);
 
   return (
     <div>
@@ -121,7 +121,11 @@ const ProjectCanvasPlaygrond = () => {
           screenDescription={screenConfig?.[0]?.screenDescription ?? ""}
           takeScreenshot={() => setTakeScreenshot(Date.now())}
         />
-        <Canvas projectDetail={projectDetail} screenConfig={screenConfig} takeScreenshot={takeScreenshot} />
+        <Canvas
+          projectDetail={projectDetail}
+          screenConfig={screenConfig}
+          takeScreenshot={takeScreenshot}
+        />
       </div>
     </div>
   );

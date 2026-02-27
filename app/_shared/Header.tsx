@@ -4,6 +4,7 @@ import { ModeToggle } from "@/components/ModeToggle";
 import { Button } from "@/components/ui/button";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   const { user } = useUser();
@@ -17,12 +18,14 @@ const Header = () => {
         </h2>
       </div>
       <ul className="flex flex-row gap-10 items-center text-lg">
-        <li className="hover:text-primary cursor-pointer transition-colors ease-in duration-75">
+        <Link href={"/"}><li className="hover:text-primary cursor-pointer transition-colors ease-in duration-75">
           Home
         </li>
-        <li className="hover:text-primary cursor-pointer transition-colors ease-in duration-75">
+        </Link>
+        <Link href={"/pricing"}><li className="hover:text-primary cursor-pointer transition-colors ease-in duration-75">
           Pricing
         </li>
+        </Link>
       </ul>
       <div className="flex flex-row items-center justify-between gap-4">
         <ModeToggle />

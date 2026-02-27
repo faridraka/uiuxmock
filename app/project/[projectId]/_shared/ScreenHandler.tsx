@@ -16,7 +16,7 @@ import {
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { HtmlWrapper } from "@/constants/htmlWrapper";
@@ -24,6 +24,7 @@ import { Theme } from "@/constants/themes";
 import { RefreshDataContext } from "@/context/RefreshDataContext";
 import api from "@/lib/axios";
 import { ScreenConfigType } from "@/types/type";
+import { useAuth } from "@clerk/nextjs";
 import html2canvas from "html2canvas";
 import {
   Code2Icon,
@@ -31,11 +32,13 @@ import {
   Download,
   GripVertical,
   Loader2Icon,
+  Lock,
   MoreVertical,
   Sparkle,
   SparkleIcon,
   Trash,
 } from "lucide-react";
+import Link from "next/link";
 import { useContext, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -53,7 +56,10 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
   const { refreshData, setRefreshData } = useContext(RefreshDataContext);
   const [editUserInput, setEditUserInput] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  
+
+  const { has } = useAuth();
+  const hasPremiumAccess = has && has({ plan: "unlimited" });
+
   const takeIframeScreenshot = async () => {
     const iframe = iframeRef?.current;
     if (!iframe) return;
@@ -111,7 +117,7 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
 
     console.log(result.data);
 
-    toast.success("Screen Edited Succesfully")
+    toast.success("Screen Edited Succesfully");
     setRefreshData({ method: "screenConfig", date: Date.now() });
     setLoading(false);
   };
@@ -133,7 +139,7 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
             <DialogHeader>
               <DialogTitle>HTML + Tailwindcss Code</DialogTitle>
               <DialogDescription>
-                <div className="flex-1 overflow-y-auto rounded-md border bg-muted p-4">
+                <div className="flex-1 overflow-y-auto rounded-md border bg-muted p-4 relative">
                   {/* @ts-ignore */}
                   <SyntaxHighlighter
                     language="html"
@@ -152,15 +158,35 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
                         wordBreak: "break-word",
                       },
                     }}
+                    className={`${!hasPremiumAccess && "blur-xs select-none"}`}
                   >
                     {htmlCode}
                   </SyntaxHighlighter>
+
+                  {!hasPremiumAccess && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-sm font-medium">
+                      <h3 className="text-xl font-semibold text-gray-800">
+                        This feature is available for Unlimited users only.
+                      </h3>
+                      <p className="text-sm text-gray-700 font-medium mb-4">
+                        Upgrade your plan to copy and use the generated UI/UX
+                        HTML code.
+                      </p>
+                      <Link href={"/pricing"}>
+                        <Button>
+                          <Lock /> Unlock Premium Feature
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+
                   <Button
                     className="mt-3"
                     onClick={() => {
                       navigator.clipboard.writeText(htmlCode as string);
                       toast.success("Code Copied!");
                     }}
+                    disabled={!hasPremiumAccess}
                   >
                     {" "}
                     <Copy /> Copy
@@ -195,7 +221,12 @@ const ScreenHandler = ({ screen, theme, iframeRef, projectId }: props) => {
                 onClick={() => editScreen()}
                 disabled={loading}
               >
-                {loading ? <Loader2Icon className="animate-spin" />: <Sparkle />} Regenerate
+                {loading ? (
+                  <Loader2Icon className="animate-spin" />
+                ) : (
+                  <Sparkle />
+                )}{" "}
+                Regenerate
               </Button>
             </div>
           </PopoverContent>

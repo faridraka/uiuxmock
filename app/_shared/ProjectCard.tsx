@@ -15,7 +15,7 @@ const ProjectCard = ({ project }: Props) => {
         alt={project.projectName as string}
         width={300}
         height={300}
-        className="rounded-xl object-contain h-50 w-full bg-black"
+        className="rounded-xl object-contain h-50 w-full bg-gray-200 dark:bg-gray-900"
       />
       <div className="p-2">
         <h2>{project.projectName}</h2>
